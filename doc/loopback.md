@@ -37,6 +37,20 @@ Pros of the 4th version:
   - Is a child of application-level context
   - Holds configuration specific to a particular server instance
   - Each server instance has the application-level context as its parent => any bindings defined on the application will also be available to the server(s)
+- Request-level context:
+  - Dynamically created for each incoming server request
+  - Extend the application level context available through `this.ctx`
+  - Are garbage collected once the response is sent
+- _Bind_ via `ContextKey` and `ContextValue` 
+- Consumers have to know the the type associated with each binding key (important because the bugs can be subtle and difficult to spot)
+  - `export const HOST = new BindingKey<string | undefined>('rest.host');`
+- See [Context API Docs](http://apidocs.loopback.io/@loopback%2fdocs/context.html) for more details
+
+```
+const app = new Application();
+app.bind('hello').to('world'); // ContextKey='hello', ContextValue='world'
+console.log(app.getSync<string>('hello')); // => 'world'
+```
 
 ### TODO
 - Server: An implementation for inbound transports/protocols such as REST (http, https), gRPC (http2) and graphQL (http, https). It typically listens on a specific endpoint (protocol/host/port), handles incoming requests, and then returns appropriate responses.
