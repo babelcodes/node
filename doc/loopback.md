@@ -23,10 +23,25 @@ Pros of the 4th version:
   - This class can be found at `/src/my-app.application.ts`
   - The `Application` class constructor also accepts an [ApplicationConfig](http://apidocs.loopback.io/@loopback%2fdocs/core.html#ApplicationConfig)
 
+[Context](https://loopback.io/doc/en/lb4/Context.html)
+- An abstraction of states and dependencies in your application that LoopBack uses to manage everything.
+- It’s a global registry for everything in your app (configurations, state, dependencies, classes and so on).
+- An inversion of control container used to inject dependencies into your code
+- Context instances can be chained using the parent to form a hierarchy, and an optional name.
+- An application typically has three “levels” of context: application-level, server-level and request-level.
+- Application-level context (global):
+  - Stores all the initial and modified app state throughout the entire life of the app (while the process is alive)
+  - Generally configured when the application is created 
+  - `const app = new Application(); // 'app' is a "Context"`
+- Server-level context:
+  - Is a child of application-level context
+  - Holds configuration specific to a particular server instance
+  - Each server instance has the application-level context as its parent => any bindings defined on the application will also be available to the server(s)
+
 ### TODO
 - Server: An implementation for inbound transports/protocols such as REST (http, https), gRPC (http2) and graphQL (http, https). It typically listens on a specific endpoint (protocol/host/port), handles incoming requests, and then returns appropriate responses.
 
-- Context: An abstraction of states and dependencies in your application that LoopBack uses to manage everything. It’s a global registry for everything in your app (configurations, state, dependencies, classes and so on).
+- Context
 
 - Dependency Injection: The technique used to separate the construction of dependencies of a class or function from its behavior to keep the code loosely coupled.
 
